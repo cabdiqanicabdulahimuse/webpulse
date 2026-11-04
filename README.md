@@ -1,5 +1,7 @@
 # WebPulse
 
+[![Tests](https://github.com/cabdiqanicabdulahimuse/webpulse/actions/workflows/tests.yml/badge.svg)](https://github.com/cabdiqanicabdulahimuse/webpulse/actions/workflows/tests.yml)
+
 ### Monitor Any Website. Understand Every Response.
 
 WebPulse is a website monitoring application built with Python. It combines a command-line interface (CLI), automated monitoring, a browser dashboard, status alerts, and uptime reports.
@@ -90,7 +92,7 @@ Uptime is calculated from recorded monitoring checks. It is not continuous secon
 Replace `YOUR_USERNAME` with the GitHub account hosting the repository.
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/WebPulse.git
+git clone https://github.com/cabdiqanicabdulahimuse/webpulse.git
 cd WebPulse
 ```
 
