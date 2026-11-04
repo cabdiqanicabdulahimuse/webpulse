@@ -1,0 +1,27 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.db
+.env
+*.log
+dist/
+build/
+*.egg-info/
+
+# Environment and secret files
+.env.*
+!.env.example
+secrets/
+credentials/
+credentials.json
+
+# Database files
+*.sqlite
+*.sqlite3
+
+# Private keys and certificates
+*.pem
+*.key
+*.p12
+*.pfx
