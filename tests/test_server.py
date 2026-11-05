@@ -24,6 +24,9 @@ def test_dashboard_contains_all_main_sections(client):
     assert response.status_code == 200
     assert "Monitoring Overview" in html
     assert "Website Monitoring" in html
+    assert "Enter the URL" in html
+    assert "url-search-form" in html
+    assert 'href="/favicon.svg"' in html
     assert "Daily Report" in html
     assert "Weekly Report" in html
     assert "Recent Alerts" in html
@@ -40,6 +43,34 @@ def test_websites_endpoint(client, db_env, website, valid_check_result):
     assert data["count"] == 1
     assert data["websites"][0]["name"] == "Example Test"
     assert data["websites"][0]["latest_check"]["status"] == "UP"
+
+
+def test_webpulse_favicon(client):
+    response = client.get("/favicon.svg")
+    assert response.status_code == 200
+    assert response.mimetype == "image/svg+xml"
+
+
+def test_quick_check_endpoint(client, db_env, monkeypatch, valid_check_result):
+    import webpulse.server as server
+
+    monkeypatch.setattr(server, "validate_public_url", lambda url: 0.0)
+    monkeypatch.setattr(server, "check_website", lambda url: valid_check_result.copy())
+
+    response = client.post("/api/check", json={"url": "https://example.com"})
+    assert response.status_code == 200
+    data = response.get_json()
+    assert data["website"]["name"] == "example.com"
+    assert data["check"]["status"] == "UP"
+
+    website = db_env.get_website_by_url("https://example.com")
+    assert website is not None
+    assert db_env.list_checks(website["id"], limit=1)[0]["status"] == "UP"
+
+
+def test_quick_check_rejects_private_ip(client):
+    response = client.post("/api/check", json={"url": "http://127.0.0.1"})
+    assert response.status_code == 400
 
 
 def test_stats_endpoint(client, db_env, website, valid_check_result):
